@@ -42,9 +42,16 @@ shinyUI(
              sidebarLayout(
                
                sidebarPanel(
-                 selectInput('country','Select Country',
+                 selectInput('country1','Select Country',
                              choices = c('All',round16_team),
                              selected = 'All'),
+                 selectInput('country2','Select Comparing Country',
+                             choices = c('All',round16_team),
+                             selected = 'Germany'),
+                 selectInput('N','Select Top Numbers',
+                             choices = c(1,3,5,10,15,20,30,40,50),
+                             selected = 20),
+                 
                  downloadButton('downloadData', 'Download Data'),
                  width = 3
                ),
@@ -55,6 +62,11 @@ shinyUI(
                    
                    tabPanel('Player',
                             DT::dataTableOutput('player', width = '110%')
+                   ),                 
+                   tabPanel(
+                     'Value of Players',
+                     br(),
+                     plotOutput('Value1', width = '100%',height = 600)
                    )
                  )
                )

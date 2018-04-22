@@ -1,6 +1,7 @@
 setwd("~/Documents/GitHub/Spring2018-Project5-grp_6/app")
 worldCups <- read.csv("../data/fifa-world-cup/WorldCups.csv",sep=',',stringsAsFactors=F)
-CompleteDataset <- read.csv("../data/fifa-18-demo-player-dataset/CompleteDataset.csv",sep=',',stringsAsFactors=F)[,-1]
+load("../output/CompleteDataset.RData")
+
 
 shinyServer(function(input, output, session) { 
   ######################################      Welcome       ######################################
@@ -77,16 +78,58 @@ shinyServer(function(input, output, session) {
 
   ######################################     Statistics     ######################################
   #player
+  
   output$player <- DT::renderDataTable(DT::datatable({
     player_table <- CompleteDataset[,-c(3,5,9)]
-    if (input$country == 'All'){
+    if (input$country1 == 'All'){
       player_table
     }
     else{
-      player_table <- player_table[player_table$Nationality == input$country,] 
+      player_table <- player_table[player_table$Nationality == input$country1,] 
       player_table
     }
     }, options = list(autoWidth = TRUE, dom = 'tp', scrollX = TRUE)))
+  
+  #by_ages
+  
+  output$Value1<- renderPlot({
+    if (input$country1 == 'All'){selectdf_1 <- CompleteDataset}
+    else{selectdf_1 <- CompleteDataset[CompleteDataset$Nationality == input$country1, ]}
+    
+    if (input$country2 == 'All'){selectdf_2 <- CompleteDataset}
+    else{selectdf_2 <- CompleteDataset[CompleteDataset$Nationality == input$country2, ]}
+    
+    
+    select_by_value_1 <-selectdf_1[order(selectdf_1$ValueNum,decreasing = T)[1:input$N], ]
+    select_by_value_2 <-selectdf_2[order(selectdf_2$ValueNum,decreasing = T)[1:input$N], ]
+    
+    p1 <- ggplot(select_by_value_1, aes( y=ValueNum, x=reorder(Name,-ValueNum),fill= -Overall)) + 
+      geom_col( position="dodge")+
+      labs(title=paste("Top",input$N,"Players'value of",input$country1) , x="Players", y="Value (Millions €)")+
+      theme(
+        plot.title = element_text(size=20, face="bold",hjust = 0.5),
+        axis.title.x = element_text(size=12, face="bold"),
+        axis.title.y = element_text(size=10, face="bold"),
+        axis.text.x = element_text(size=10, face="bold",angle = 45,vjust=0.5)
+        )+
+      ylim(c(0,125))
+    
+    p2 <- ggplot(select_by_value_2, aes(y=ValueNum, x=reorder(Name,-ValueNum),fill= -Overall)) + 
+      geom_col( position="dodge")+
+      labs(title=paste("Top",input$N,"Players'value of",input$country2) , x="Players", y="Value (Millions €)")+
+      theme(
+        plot.title = element_text(size=20, face="bold",hjust = 0.5),
+        axis.title.x = element_text(size=12, face="bold"),
+        axis.title.y = element_text(size=10, face="bold"),
+        axis.text.x = element_text(size=10, face="bold",angle = 45,vjust=0.5)
+        
+        
+      )+
+      ylim(c(0,125))
+    
+    grid.arrange(p1,p2, ncol=1, nrow=2)
+    
+  })
   
   #download
   output$downloadData <- downloadHandler(
