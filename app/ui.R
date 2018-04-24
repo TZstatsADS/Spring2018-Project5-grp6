@@ -83,7 +83,65 @@ shinyUI(
     ),
 
     ######################################        About       ######################################
-    tabPanel('About'
+    tabPanel('About',
+             
+             fixedRow(        
+               column(
+                 img(src = 'history.jpg', id = 'ribbon-about', height = 230),
+                 width = 12
+               )
+             ),
+             br(),
+             
+             fixedRow(
+               
+               column(
+                 HTML('<ul class="nav nav-pills nav-justified">
+                      <li class="active">
+                      <a href="#about-tab-1" data-toggle="tab" data-value="Teams/Matches">Teams / Matches</a>
+                      </li>
+                      <li>
+                      <a href="#about-tab-2" data-toggle="tab" data-value="Total Goals">Total Goals</a>
+                      </li>
+                      <li>
+                      <a href="#about-tab-3" data-toggle="tab" data-value="Final Rounds">Final Rounds</a>
+                      </li>
+                      </ul>'),
+                 width = 12
+                 )
+               ),
+             
+             HTML('<div class="container-fluid">
+                  <div class="tab-content">
+                  <div class="tab-pane active" data-value="Teams/Matches" id="about-tab-1">'),
+             
+             br(),
+             br(),
+             br(),
+             
+             #####
+             
+             HTML('     </div>
+                  <div class="tab-pane" data-value="Total Goals" id="about-tab-2">'),
+             
+             br(),
+             br(),
+             br(),
+             
+             #####
+             
+             column(width = 2),
+             
+             HTML('     </div>
+                  <div class="tab-pane" data-value="Final Rounds" id="about-tab-3">'),
+             
+             br(),
+             br(),
+             br()
+             
+             ######
     )
   )
 )
+    
+
