@@ -14,81 +14,10 @@ shinyUI(
     
     ######################################      History       ######################################
     tabPanel('History',
-             tabsetPanel(
-               
-               tabPanel('Overall', plotOutput("overall", width = "100%", height = "500px")),
-               
-               tabPanel("Final Rounds",
-                        
-                        sidebarLayout(
-                          
-                          sidebarPanel(
-                            selectInput('Year','Select Year', 
-                                        choices = list(1986,1990,1994,1998,2002,2006,2010,2014),
-                                        selected = 1986),
-                            width = 3
-                          ),
-                          
-                          mainPanel(
-                            plotOutput("round", width = "100%", height = "500px")
-                            
-                          )
-                        )
-               )
-             )
-    ),  
-
-    ######################################     Statistics     ######################################
-    tabPanel('2018 Statistics',
-             sidebarLayout(
-               
-               sidebarPanel(
-                 selectInput('country1','Select Country',
-                             choices = c('All',round16_team),
-                             selected = 'All'),
-                 selectInput('country2','Select Comparing Country',
-                             choices = c('All',round16_team),
-                             selected = 'Germany'),
-                 selectInput('N','Select Top Numbers',
-                             choices = c(1,3,5,10,15,20,30,40,50),
-                             selected = 20),
-                 
-                 downloadButton('downloadData', 'Download Data'),
-                 width = 3
-               ),
-               
-               mainPanel(
-                 
-                 tabsetPanel(
-                   
-                   tabPanel('Player',
-                            DT::dataTableOutput('player', width = '110%')
-                   ),                 
-                   tabPanel(
-                     'Value of Players',
-                     br(),
-                     plotOutput('Value1', width = '100%',height = 600)
-                   ),
-                   tabPanel(
-                     '3D-Plot',
-                     br(),
-                     plotlyOutput('D3', width = '100%',height = 600)
-                   )
-                 )
-               )
-             )
-    ),
-
-    ######################################     Prediction     ######################################
-    tabPanel('Prediction'
-    ),
-
-    ######################################        About       ######################################
-    tabPanel('About',
              
              fixedRow(        
                column(
-                 img(src = 'history.jpg', id = 'ribbon-about', height = 230),
+                 img(src = 'FIFA.jpeg', id = 'ribbon-about', height = 80),
                  width = 12
                )
              ),
@@ -117,32 +46,147 @@ shinyUI(
                   <div class="tab-pane active" data-value="Teams/Matches" id="about-tab-1">'),
              
              br(),
-             br(),
-             br(),
-             
-             #####
+             plotOutput("tm", width = "100%", height = "400px"),
              
              HTML('     </div>
                   <div class="tab-pane" data-value="Total Goals" id="about-tab-2">'),
              
              br(),
-             br(),
-             br(),
-             
-             #####
-             
-             column(width = 2),
+             plotOutput("goals", width = "100%", height = "400px"),
              
              HTML('     </div>
                   <div class="tab-pane" data-value="Final Rounds" id="about-tab-3">'),
              
              br(),
-             br(),
-             br()
+             sidebarLayout(
+               
+               sidebarPanel(
+                 selectInput('Year','Select Year', 
+                             choices = years,
+                             selected = 2014),
+                 width = 3
+               ),
+               
+               mainPanel(
+                 plotOutput("round", width = "100%", height = "400px"),
+                 width = 9
+               )
+             ),
              
-             ######
+             HTML('     </div>
+                      </div>
+                    </div>')
+    ),  
+
+    ######################################     Statistics     ######################################
+    tabPanel('2018 Statistics',
+             fixedRow(        
+               column(
+                 img(src = 'FIFA.jpeg', id = 'ribbon-about', height = 80),
+                 width = 12
+               )
+             ),
+             br(),
+             
+             fixedRow(
+               tabsetPanel(
+                 tabPanel('Countries',
+                          sidebarLayout(
+                            sidebarPanel(
+                              selectInput('country_map','Select Country',
+                                          choices = c('All',round16_team),
+                                          selected = 'France'),
+                              width = 3
+                              ),
+                            
+                            mainPanel(
+                              leafletOutput("map", width="100%", height = "500px")
+                              )
+                          )
+                 ),
+                 
+                 tabPanel('Players',
+                          sidebarLayout(
+                            sidebarPanel(
+                              selectInput('country_player','Select Country',
+                                          choices = c('All',round16_team),
+                                          selected = 'All'),
+                              downloadButton('downloadData', 'Download Data'),
+                              width = 3),
+                            
+                            mainPanel(
+                              DT::dataTableOutput('player', width = '110%')
+                            )
+                          )
+                 ),
+                 
+                 tabPanel('Top Players',
+                          sidebarLayout(
+                            sidebarPanel(
+                              selectInput('country1_v','Select Country',
+                                          choices = c('All',round16_team),
+                                          selected = 'All'),
+                              selectInput('country2_v','Select Comparing Country',
+                                          choices = c('All',round16_team),
+                                          selected = 'Germany'),
+                              selectInput('N','Select Top Numbers',
+                                          choices = c(1,3,5,10,15,20,30,40,50),
+                                          selected = 20),
+                              width = 3),
+                            
+                            mainPanel(
+                              plotOutput('value', width = '100%',height = 600)
+                            )
+                          )
+                 ),
+                 
+                 tabPanel('3D-Plot',
+                          sidebarLayout(
+                            sidebarPanel(
+                              selectInput('country1_3D','Select Country',
+                                          choices = c('All',round16_team),
+                                          selected = 'All'),
+                              selectInput('country2_3D','Select Comparing Country',
+                                          choices = c('All',round16_team),
+                                          selected = 'Germany'),
+                              selectInput('N_3D','Select Top Numbers',
+                                          choices = c(1,3,5,10,15,20,30,40,50),
+                                          selected = 20),
+                              width = 3),
+                            
+                            mainPanel(
+                              plotlyOutput('D3', width = '100%',height = 600)
+                            )
+                          )
+                 )
+               )
+             )
+    ),
+
+    ######################################     Prediction     ######################################
+    tabPanel('Prediction',
+             fixedRow(        
+               column(
+                 img(src = 'FIFA.jpeg', id = 'ribbon-about', height = 80),
+                 width = 12
+               )
+             ),
+             br(),
+             
+             fixedRow()
+    ),
+
+    ######################################        About       ######################################
+    tabPanel('About',
+             fixedRow(        
+               column(
+                 img(src = 'FIFA.jpeg', id = 'ribbon-about', height = 80),
+                 width = 12
+               )
+             ),
+             br(),
+             
+             fixedRow()
     )
   )
 )
-    
-
