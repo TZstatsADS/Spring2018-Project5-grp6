@@ -67,6 +67,11 @@ shinyUI(
                      'Value of Players',
                      br(),
                      plotOutput('Value1', width = '100%',height = 600)
+                   ),
+                   tabPanel(
+                     '3D-Plot',
+                     br(),
+                     plotlyOutput('D3', width = '100%',height = 600)
                    )
                  )
                )
