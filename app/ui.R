@@ -24,13 +24,14 @@ shinyUI(
                           
                           sidebarPanel(
                             selectInput('Year','Select Year', 
-                                        choices = years,
-                                        selected = '2014'),
+                                        choices = list(1986,1990,1994,1998,2002,2006,2010,2014),
+                                        selected = 1986),
                             width = 3
                           ),
                           
                           mainPanel(
-                            plotOutput("round", width = "100%", height = "300px")
+                            plotOutput("round", width = "100%", height = "500px")
+                            
                           )
                         )
                )
@@ -67,6 +68,11 @@ shinyUI(
                      'Value of Players',
                      br(),
                      plotOutput('Value1', width = '100%',height = 600)
+                   ),
+                   tabPanel(
+                     '3D-Plot',
+                     br(),
+                     plotlyOutput('D3', width = '100%',height = 600)
                    )
                  )
                )

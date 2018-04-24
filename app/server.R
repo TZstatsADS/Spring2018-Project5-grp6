@@ -1,6 +1,7 @@
-setwd("~/Documents/GitHub/Spring2018-Project5-grp_6/app")
-worldCups <- read.csv("../data/fifa-world-cup/WorldCups.csv",sep=',',stringsAsFactors=F)
-load("../output/CompleteDataset.RData")
+setwd("d:/Personal/Documents/GitHub/Spring2018-Project5-grp_6")
+worldCups <- read.csv("data/fifa-world-cup/WorldCups.csv",sep=',',stringsAsFactors=F)
+worldMatch <- read.csv("data/fifa-world-cup/WorldCupMatches.csv",sep=',',stringsAsFactors=F)
+load("output/CompleteDataset.RData")
 
 
 shinyServer(function(input, output, session) { 
@@ -75,6 +76,12 @@ shinyServer(function(input, output, session) {
     #assemble plots
     grid.arrange(g1,g2,ncol=1)
   })
+  
+  output$round <- renderPlot({
+    load("./output/alluvials.RData")
+    roundyear <- as.numeric(input$Year)
+    do.call(grid.arrange, list(alluvials[[(roundyear - 1986)/4 + 1]]))
+  })
 
   ######################################     Statistics     ######################################
   #player
@@ -130,6 +137,31 @@ shinyServer(function(input, output, session) {
     grid.arrange(p1,p2, ncol=1, nrow=2)
     
   })
+  
+  
+  output$D3 <- renderPlotly({
+    if (input$country1 == 'All'){selectdf_a <- CompleteDataset}
+    else{selectdf_a <- CompleteDataset[CompleteDataset$Nationality == input$country1, ]}
+    
+    if (input$country2 == 'All'){selectdf_b <- CompleteDataset}
+    else{selectdf_b <- CompleteDataset[CompleteDataset$Nationality == input$country2, ]}
+    
+    
+    select_by_value_a <-selectdf_a[order(selectdf_a$ValueNum,decreasing = T)[1:input$N], ]
+    select_by_value_b <-selectdf_b[order(selectdf_b$ValueNum,decreasing = T)[1:input$N], ]
+    select_by_value <- rbind(select_by_value_a,select_by_value_b)
+    
+    plot_ly(x = ~Age, y = ~ValueNum, z = ~Overall, 
+            color = ~Nationality, colors = c('#BF382A', '#0C4B8E'),
+            type = 'scatter3d', mode = 'markers', 
+            data = select_by_value,marker = list(size = 8)) %>% 
+      layout(plot_bgcolor='black') %>% 
+      layout(paper_bgcolor='transparent') %>%
+      layout(scene = list(xaxis = list(title="Age"),
+                          yaxis = list(title="Value"),
+                          zaxis = list(title="Overall")))
+  })
+  
   
   #download
   output$downloadData <- downloadHandler(

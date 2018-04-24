@@ -1,6 +1,6 @@
 #check and install packages
 packages.used <- c("shiny", "scales","magrittr","ggplot2","ggthemes",
-                   "gridExtra","RColorBrewer","DT","gridExtra")
+                   "gridExtra","RColorBrewer","DT","gridExtra","plotly")
 
 packages.needed <- setdiff(packages.used, 
                            intersect(installed.packages()[,1], packages.used))
@@ -18,6 +18,7 @@ library(gridExtra)
 library(RColorBrewer)
 library(DT)
 library(gridExtra)
+library(plotly)
 #teams
 round16_team <- sort(c("Russia", "Uruguay", "Spain", "Portugal", "France", "Denmark", "Argentina", "Croatia",
                        "Brazil", "Switzerland", "Germany", "Sweden", "Belgium", "England", "Poland", "Colombia"))
