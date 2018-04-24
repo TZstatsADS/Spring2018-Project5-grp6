@@ -17,7 +17,7 @@ team_best_players <-list()
 
 for(i in 1:length(round16_team)) {
   team_best_players[[i]] <- team_players[[i]][order(team_players[[i]]$Overall, decreasing = TRUE), ]
-  team_best_players[[i]] <- team_best_players[[i]][1:30, ]
+  team_best_players[[i]] <- team_best_players[[i]][1:20, ]
 }
 
 team_best_players
