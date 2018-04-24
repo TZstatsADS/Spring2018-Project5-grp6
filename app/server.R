@@ -1,6 +1,7 @@
-setwd("~/Documents/GitHub/Spring2018-Project5-grp_6/app")
-worldCups <- read.csv("../data/fifa-world-cup/WorldCups.csv",sep=',',stringsAsFactors=F)
-load("../output/CompleteDataset.RData")
+setwd("d:/Personal/Documents/GitHub/Spring2018-Project5-grp_6")
+worldCups <- read.csv("data/fifa-world-cup/WorldCups.csv",sep=',',stringsAsFactors=F)
+worldMatch <- read.csv("data/fifa-world-cup/WorldCupMatches.csv",sep=',',stringsAsFactors=F)
+load("output/CompleteDataset.RData")
 
 
 shinyServer(function(input, output, session) { 
@@ -74,6 +75,12 @@ shinyServer(function(input, output, session) {
     
     #assemble plots
     grid.arrange(g1,g2,ncol=1)
+  })
+  
+  output$round <- renderPlot({
+    load("./output/alluvials.RData")
+    roundyear <- as.numeric(input$Year)
+    do.call(grid.arrange, list(alluvials[[(roundyear - 1986)/4 + 1]]))
   })
 
   ######################################     Statistics     ######################################
