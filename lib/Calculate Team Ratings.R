@@ -138,6 +138,26 @@ defense_rating <- function(list1) {
 defense_score <- defense_rating(team_best_players)
 defense_score
 
+GK_rating <- function(list1) {
+  # GK Ratings
+  best_GK_ratings <- NULL
+  best_GK <- list()
+  for(i in 1:length(list1)) {
+    list1[[i]]$Preferred.Positions <- as.character(list1[[i]]$Preferred.Positions)
+    best_GK[[i]] <- list1[[i]][list1[[i]]$Preferred.Positions == "GK ", ]
+    best_GK_ratings <- rbind(best_GK_ratings, c(mean(as.numeric(as.character(best_GK[[i]]$Overall)))))
+  }
+  
+  overall_GK <- data.frame()
+  for(i in 1:length(list1)) {
+    overall_GK <- rbind(overall_GK, floor((best_GK_ratings[i, ])))
+  }
+  
+  return(overall_GK)
+}
+GK_score <- GK_rating(team_best_players)
+GK_score
+
 allposition_rating <- function(list1) {
   allratings <- NULL
   for(i in 1:length(list1)) {
@@ -154,25 +174,29 @@ allposition_rating <- function(list1) {
   return(overall_allpositions)
 }
 
+
+
 allposition_score <- allposition_rating(team_best_players)
 allposition_score
 
 
 team_rating <- function(list1) {
-  attack_score <- attack_rating(team_best_players)
+  attack_score <- attack_rating(list1)
   
-  midfield_score <- midfield_rating(team_best_players)
+  midfield_score <- midfield_rating(list1)
   
-  defense_score <- defense_rating(team_best_players)
+  defense_score <- defense_rating(list1)
   
-  allposition_score <- allposition_rating(team_best_players)
+  GK_score <- GK_rating(list1)
   
-  team_complete_rating <- cbind(allposition_score, attack_score, midfield_score, defense_score)
+  allposition_score <- allposition_rating(list1)
+  
+  team_complete_rating <- cbind(allposition_score, attack_score, midfield_score, defense_score, GK_score)
   
   colnames(team_complete_rating) <- c("Overall", "Ball Control", "Short Passing", "Stamina", "Strength", "Positioning", 
                                       "Acceleration", "Dribbling", "Finishing", "Heading Accuracy", 
                                       "Interceptions Midfield", "Long Shots", "Vision", 
-                                      "Interceptions Defense", "Sliding Tackle", "Standing Tackle")
+                                      "Interceptions Defense", "Sliding Tackle", "Standing Tackle", "GK")
   
   return(team_complete_rating)
 }
