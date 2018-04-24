@@ -86,7 +86,7 @@ shinyServer(function(input, output, session) {
     lims <- as.POSIXct(strptime(c("1927-01-01","2015-01-01"), format = "%Y-%m-%d"))
     
     #plot of goals vs year
-    g1 <- worldCups %>% ggplot(aes(x=as.POSIXct(DateTS),y=GoalsScored)) + 
+    g1 <- worldCups %>% ggplot(aes(x=as.POSIXct(DateTS),y=GoalsScored,label = Winner)) + 
       geom_vline(xintercept= as.POSIXct(as.Date('1930-01-01')),alpha=.5) + 
       geom_vline(xintercept= as.POSIXct(as.Date('1934-01-01')),alpha=.5) + 
       geom_vline(xintercept= as.POSIXct(as.Date('1966-01-01')),alpha=.5) + 
@@ -96,7 +96,8 @@ shinyServer(function(input, output, session) {
       geom_point(aes(color=WinnerColor),size=4) + 
       theme_fivethirtyeight() + 
       scale_x_datetime(limits =lims, date_breaks="4 year", labels = date_format("%Y")) + 
-      scale_color_identity()
+      scale_color_identity() + 
+      geom_text(vjust = 0, nudge_y = 4,check_overlap = T)
     
     #add the legend plot
     g1 <- g1 + annotation_custom(ggplotGrob(myleg),
