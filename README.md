@@ -25,6 +25,7 @@ Term: Spring 2018
 	
 	Here is the link of our shiny app:
 	
+	https://xueyao0917.shinyapps.io/FIFAWorldCup/
 	
 	Here is the first look of our predictions of the entire elimination stages:
 	
