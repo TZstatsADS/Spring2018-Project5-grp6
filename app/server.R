@@ -86,7 +86,7 @@ shinyServer(function(input, output, session) {
     lims <- as.POSIXct(strptime(c("1927-01-01","2015-01-01"), format = "%Y-%m-%d"))
     
     #plot of goals vs year
-    g1 <- worldCups %>% ggplot(aes(x=as.POSIXct(DateTS),y=GoalsScored)) + 
+    g1 <- worldCups %>% ggplot(aes(x=as.POSIXct(DateTS),y=GoalsScored,label = Winner)) + 
       geom_vline(xintercept= as.POSIXct(as.Date('1930-01-01')),alpha=.5) + 
       geom_vline(xintercept= as.POSIXct(as.Date('1934-01-01')),alpha=.5) + 
       geom_vline(xintercept= as.POSIXct(as.Date('1966-01-01')),alpha=.5) + 
@@ -96,7 +96,8 @@ shinyServer(function(input, output, session) {
       geom_point(aes(color=WinnerColor),size=4) + 
       theme_fivethirtyeight() + 
       scale_x_datetime(limits =lims, date_breaks="4 year", labels = date_format("%Y")) + 
-      scale_color_identity()
+      scale_color_identity() + 
+      geom_text(vjust = 0, nudge_y = 4,check_overlap = T)
     
     #add the legend plot
     g1 <- g1 + annotation_custom(ggplotGrob(myleg),
@@ -148,20 +149,21 @@ shinyServer(function(input, output, session) {
     }
     }, options = list(autoWidth = TRUE, dom = 'tp', scrollX = TRUE)))
   
-  #value
-  output$value <- renderPlot({
-    if (input$country1_v == 'All'){selectdf_1 <- CompleteDataset}
-    else{selectdf_1 <- CompleteDataset[CompleteDataset$Nationality == input$country1_v, ]}
+  #compare
+  output$compare <- renderPlot({
     
-    if (input$country2_v == 'All'){selectdf_2 <- CompleteDataset}
-    else{selectdf_2 <- CompleteDataset[CompleteDataset$Nationality == input$country2_v, ]}
-
-    select_by_value_1 <-selectdf_1[order(selectdf_1$ValueNum,decreasing = T)[1:input$N], ]
-    select_by_value_2 <-selectdf_2[order(selectdf_2$ValueNum,decreasing = T)[1:input$N], ]
+    selectdf_1 <- CompleteDataset[CompleteDataset$Nationality == input$country1, ]
+    selectdf_2 <- CompleteDataset[CompleteDataset$Nationality == input$country2, ]
     
-    p1 <- ggplot(select_by_value_1, aes( y=ValueNum, x=reorder(Name,-ValueNum),fill= -Overall)) + 
+    selectdf_1_N <- selectdf_1[order(selectdf_1$Overall, decreasing = T)[1:input$N],]
+    selectdf_1_N[input$category] <- as.numeric(unlist(selectdf_1_N[input$category]))
+    
+    selectdf_2_N <- selectdf_2[order(selectdf_2$Overall, decreasing = T)[1:input$N],]
+    selectdf_2_N[input$category] <- as.numeric(unlist(selectdf_2_N[input$category]))
+    
+    p1 <- ggplot(selectdf_1_N, aes_string(y=input$category, x="Name", fill="Overall")) + 
       geom_col( position="dodge")+
-      labs(title=paste("Top",input$N,"Players' value of",input$country1_v) , x="Players", y="Value (Millions €)")+
+      labs(title=paste("Top",input$N,"Players'",input$category,"of",input$country1) , x="Players", y="Value (Millions €)")+
       theme(
         plot.title = element_text(size=20, face="bold",hjust = 0.5),
         axis.title.x = element_text(size=12, face="bold"),
@@ -170,9 +172,9 @@ shinyServer(function(input, output, session) {
         )+
       ylim(c(0,125))
     
-    p2 <- ggplot(select_by_value_2, aes(y=ValueNum, x=reorder(Name,-ValueNum),fill= -Overall)) + 
+    p2 <- ggplot(selectdf_2_N, aes_string(y=input$category, x="Name", fill="Overall")) + 
       geom_col( position="dodge")+
-      labs(title=paste("Top",input$N,"Players' value of",input$country2_v) , x="Players", y="Value (Millions €)")+
+      labs(title=paste("Top",input$N,"Players'",input$category,"of",input$country2) , x="Players", y="Value (Millions €)")+
       theme(
         plot.title = element_text(size=20, face="bold",hjust = 0.5),
         axis.title.x = element_text(size=12, face="bold"),
@@ -182,19 +184,17 @@ shinyServer(function(input, output, session) {
       ylim(c(0,125))
     
     grid.arrange(p1, p2, ncol=1)
+    
   })
   
-  #3D
   output$D3 <- renderPlotly({
-    if (input$country1_3D == 'All'){selectdf_a <- CompleteDataset}
-    else{selectdf_a <- CompleteDataset[CompleteDataset$Nationality == input$country1_3D, ]}
     
-    if (input$country2_3D == 'All'){selectdf_b <- CompleteDataset}
-    else{selectdf_b <- CompleteDataset[CompleteDataset$Nationality == input$country2_3D, ]}
+    selectdf_1 <- CompleteDataset[CompleteDataset$Nationality == input$country1, ]
+    selectdf_2 <- CompleteDataset[CompleteDataset$Nationality == input$country2, ]
     
-    select_by_value_a <-selectdf_a[order(selectdf_a$ValueNum,decreasing = T)[1:input$N_3D], ]
-    select_by_value_b <-selectdf_b[order(selectdf_b$ValueNum,decreasing = T)[1:input$N_3D], ]
-    select_by_value <- rbind(select_by_value_a,select_by_value_b)
+    select_by_value_1 <-selectdf_1[order(selectdf_1$Overall, decreasing = T)[1:input$N], ]
+    select_by_value_2 <-selectdf_2[order(selectdf_2$Overall, decreasing = T)[1:input$N], ]
+    select_by_value <- rbind(select_by_value_1, select_by_value_2)
     
     plot_ly(x = ~Age, y = ~ValueNum, z = ~Overall, 
             color = ~Nationality, colors = c('#BF382A', '#0C4B8E'),
