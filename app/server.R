@@ -123,7 +123,7 @@ shinyServer(function(input, output, session) {
   output$map <- renderLeaflet({
     countries <- readOGR("app/www/countries.geo.json", "OGRGeoJSON")
     if (input$country_map == 'All'){
-      index <- which(countries$name %in% round16_team)
+      index <- which(countries$name %in% all_team)
       leaflet(countries[index,]) %>% 
         addTiles() %>%
         addPolygons(weight = 1, fillColor = "red", fillOpacity = 0.5)
@@ -211,7 +211,7 @@ shinyServer(function(input, output, session) {
     df <- rbind(df1,df2)
 
     # Plot
-    ggplot(df, aes(x = Category, y = Value, fill = Nationality)) +  
+    ggplot(df, aes(x = Category, y = Value, fill = Nationality), xlim=c(-200,200)) +  
       geom_bar(stat = "identity", width = .6) +   
       coord_flip() + 
       labs(title="Bar Chart") +

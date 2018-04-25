@@ -136,7 +136,7 @@ shinyUI(
                         sidebarLayout(
                           sidebarPanel(
                             selectInput('country_map','Select Country',
-                                        choices = c('All',round16_team_map),
+                                        choices = c('All',all_team),
                                         selected = 'Germany'),
                             width = 3
                           ),

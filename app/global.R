@@ -26,6 +26,15 @@ library(rgdal)
 library(fmsb)
 
 #team
+all_team <- sort(c("Russia","Uruguay","Saudi Arabia","Egypt",
+                   "Spain", "Portugal","Morocco","Iran",
+                   "France", "Denmark", "Argentina", "Croatia",
+                   "Australia","Iceland","Peru","Nigeria",
+                   "Costa Rica","Serbia","Germany","Mexico",
+                   "Brazil", "Switzerland","Sweden","South Korea",
+                   "Belgium", "United Kingdom","Panama","Tunisia",
+                   "Poland", "Colombia","Japan","Senegal"
+                   ))
 round16_team <- sort(c("Russia", "Uruguay", "Spain", "Portugal", "France", "Denmark", "Argentina", "Croatia",
                        "Brazil", "Switzerland", "Germany", "Sweden", "Belgium", "England", "Poland", "Colombia"))
 round16_team_map <- sort(c("Russia", "Uruguay", "Spain", "Portugal", "France", "Denmark", "Argentina", "Croatia",
