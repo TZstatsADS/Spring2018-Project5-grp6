@@ -307,7 +307,10 @@ shinyServer(function(input, output, session) {
   })
   
   ######################################     Prediction     ######################################
-  
+  getPage<-function() {
+    return(includeHTML("app/prediction.html"))
+  }
+  output$pred<-renderUI({getPage()})
   ######################################        About       ######################################
   
 })
