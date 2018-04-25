@@ -27,6 +27,8 @@ library(rgdal)
 #team
 round16_team <- sort(c("Russia", "Uruguay", "Spain", "Portugal", "France", "Denmark", "Argentina", "Croatia",
                        "Brazil", "Switzerland", "Germany", "Sweden", "Belgium", "England", "Poland", "Colombia"))
+round16_team_map <- sort(c("Russia", "Uruguay", "Spain", "Portugal", "France", "Denmark", "Argentina", "Croatia",
+                           "Brazil", "Switzerland", "Germany", "Sweden", "Belgium", "Poland", "Colombia"))
 
 #year
 years <- seq(1986, 2014, len=8)

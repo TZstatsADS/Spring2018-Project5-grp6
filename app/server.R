@@ -158,7 +158,7 @@ shinyServer(function(input, output, session) {
       # scale_y_discrete(breaks = brks,   # Breaks
       #                    labels = lbls) + # Labels
       coord_flip() +  # Flip axes
-      labs(title="Comparison") +
+      labs(title=" ") +
       theme_tufte() +  # Tufte theme from ggfortify
       theme(plot.title = element_text(hjust = .5), 
             axis.ticks = element_blank()) +   # Centre plot title
@@ -242,7 +242,8 @@ shinyServer(function(input, output, session) {
       layout(paper_bgcolor='transparent') %>%
       layout(scene = list(xaxis = list(title="Age"),
                           yaxis = list(title="Value"),
-                          zaxis = list(title="Overall")))
+                          zaxis = list(title="Overall"))) %>%
+      layout(title = "<b>Top Players' Overall-Value-Age 3D Scatter Plot</b>")
   })
   
   ######################################     Prediction     ######################################

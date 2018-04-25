@@ -109,7 +109,7 @@ shinyUI(
              
              br(),
              tabsetPanel(
-               tabPanel('Compare',
+               tabPanel('Comparison',
                         sidebarLayout(
                           sidebarPanel(
                             selectInput('country1_t','Country 1',
@@ -131,8 +131,8 @@ shinyUI(
                         sidebarLayout(
                           sidebarPanel(
                             selectInput('country_map','Select Country',
-                                        choices = c('All',round16_team),
-                                        selected = 'France'),
+                                        choices = c('All',round16_team_map),
+                                        selected = 'Germany'),
                             width = 3
                           ),
                           
@@ -148,7 +148,7 @@ shinyUI(
             
             br(), 
             tabsetPanel(
-              tabPanel('Compare',
+              tabPanel('Comparison',
                        sidebarLayout(
                          sidebarPanel(
                            selectInput('country1','Country 1',
