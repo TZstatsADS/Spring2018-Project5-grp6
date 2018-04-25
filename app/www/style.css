@@ -42,6 +42,21 @@ body {
   z-index: 100;
 }
 
+.nav-pills[data-value="Teams/Matches"]{
+  border: 0.5px solid #f2f2f2;
+  z-index: 100;
+}
+
+.nav-pills[data-value="Teams"]{
+  border: 0.5px solid #f2f2f2;
+  z-index: 100;
+}
+
+.nav-pills[data-value="Players"]{
+  border: 0.5px solid #f2f2f2;
+  z-index: 100;
+}
+
 #about {
   font-size: 20px;
 }

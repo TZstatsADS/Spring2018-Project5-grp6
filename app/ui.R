@@ -89,78 +89,91 @@ shinyUI(
              br(),
              
              fixedRow(
-               tabsetPanel(
-                 tabPanel('Countries',
-                          sidebarLayout(
-                            sidebarPanel(
-                              selectInput('country_map','Select Country',
-                                          choices = c('All',round16_team),
-                                          selected = 'France'),
-                              width = 3
-                              ),
-                            
-                            mainPanel(
-                              leafletOutput("map", width="100%", height = "500px")
-                              )
-                          )
-                 ),
-                 
-                 tabPanel('Players',
-                          sidebarLayout(
-                            sidebarPanel(
-                              selectInput('country_player','Select Country',
-                                          choices = c('All',round16_team),
-                                          selected = 'All'),
-                              downloadButton('downloadData', 'Download Data'),
-                              width = 3),
-                            
-                            mainPanel(
-                              DT::dataTableOutput('player', width = '110%')
-                            )
-                          )
-                 ),
-                 
-                 tabPanel('Top Players',
-                          sidebarLayout(
-                            sidebarPanel(
-                              selectInput('country1_v','Select Country',
-                                          choices = c('All',round16_team),
-                                          selected = 'All'),
-                              selectInput('country2_v','Select Comparing Country',
-                                          choices = c('All',round16_team),
-                                          selected = 'Germany'),
-                              selectInput('N','Select Top Numbers',
-                                          choices = c(1,3,5,10,15,20,30,40,50),
-                                          selected = 20),
-                              width = 3),
-                            
-                            mainPanel(
-                              plotOutput('value', width = '100%',height = 600)
-                            )
-                          )
-                 ),
-                 
-                 tabPanel('3D-Plot',
-                          sidebarLayout(
-                            sidebarPanel(
-                              selectInput('country1_3D','Select Country',
-                                          choices = c('All',round16_team),
-                                          selected = 'All'),
-                              selectInput('country2_3D','Select Comparing Country',
-                                          choices = c('All',round16_team),
-                                          selected = 'Germany'),
-                              selectInput('N_3D','Select Top Numbers',
-                                          choices = c(1,3,5,10,15,20,30,40,50),
-                                          selected = 20),
-                              width = 3),
-                            
-                            mainPanel(
-                              plotlyOutput('D3', width = '100%',height = 600)
-                            )
-                          )
+               
+               column(
+                 HTML('<ul class="nav nav-pills nav-justified">
+                      <li class="active">
+                      <a href="#about-tab-4" data-toggle="tab" data-value="Teams">Teams</a>
+                      </li>
+                      <li>
+                      <a href="#about-tab-5" data-toggle="tab" data-value="Players">Players</a>
+                      </li>
+                      </ul>'),
+                 width = 12
                  )
+               ),
+             
+             HTML('<div class="container-fluid">
+                  <div class="tab-content">
+                  <div class="tab-pane active" data-value="Teams" id="about-tab-4">'),
+             
+             br(),
+             tabsetPanel(
+               tabPanel('Countries',
+                        sidebarLayout(
+                          sidebarPanel(
+                            selectInput('country_map','Select Country',
+                                        choices = c('All',round16_team),
+                                        selected = 'France'),
+                            width = 3
+                          ),
+                          
+                          mainPanel(
+                            leafletOutput("map", width="100%", height = "500px")
+                          )
+                        )
                )
-             )
+             ),
+             
+             HTML('     </div>
+                  <div class="tab-pane" data-value="Players" id="about-tab-5">'),
+            
+            br(), 
+            tabsetPanel(
+              tabPanel('Visualization',
+                       sidebarLayout(
+                         sidebarPanel(
+                           selectInput('country1','Country 1',
+                                       choices = round16_team,
+                                       selected = 'Russia'),
+                           selectInput('country2','Country 2',
+                                       choices = round16_team,
+                                       selected = 'Germany'),
+                           selectInput('category','Category',
+                                       choices = category,
+                                       selected = 'ValueNum'),
+                           selectInput('N','Top Numbers',
+                                       choices = c(1,3,5,10,15,20,30,40,50),
+                                       selected = 20),
+                           width = 3),
+                         
+                         mainPanel(
+                           plotOutput('compare', width = '100%', height = "400px"),
+                           br(),
+                           plotlyOutput('D3', width = '100%', height = "400px")
+                         )
+                       )
+              ),
+              
+              tabPanel('Table',
+                       sidebarLayout(
+                         sidebarPanel(
+                           selectInput('country_player','Select Country',
+                                       choices = c('All',round16_team),
+                                       selected = 'All'),
+                           downloadButton('downloadData', 'Download Data'),
+                           width = 3),
+                         
+                         mainPanel(
+                           DT::dataTableOutput('player', width = '110%')
+                         )
+                       )
+              )
+            ),
+
+             HTML('     </div>
+                      </div>
+                  </div>')
     ),
 
     ######################################     Prediction     ######################################

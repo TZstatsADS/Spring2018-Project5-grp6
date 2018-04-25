@@ -24,9 +24,17 @@ library(ggalluvial)
 library(leaflet)
 library(rgdal)
 
-#teams
+#team
 round16_team <- sort(c("Russia", "Uruguay", "Spain", "Portugal", "France", "Denmark", "Argentina", "Croatia",
                        "Brazil", "Switzerland", "Germany", "Sweden", "Belgium", "England", "Poland", "Colombia"))
 
-#years
+#year
 years <- seq(1986, 2014, len=8)
+
+#category
+category <- c("ValueNum", "Age",
+              "Acceleration","Ball.control","Dribbling","Finishing","Heading.accuracy",
+              "Interceptions","Long.shots","Positioning","Short.passing","Sliding.tackle",
+              "Stamina","Standing.tackle","Strength","Vision")
+
+
