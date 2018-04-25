@@ -122,9 +122,12 @@ shinyUI(
                           ),
                           
                           mainPanel(
+                            br(),
+                            plotOutput("overall", width="110%", height = "200px"),
+                            br(),
                             plotOutput("radar", width="100%", height = "500px"),
                             br(),
-                            plotOutput("compare_team", width="100%", height = "500px")
+                            plotOutput("bar", width="100%", height = "500px")
                           )
                         )
                ),
@@ -168,7 +171,13 @@ shinyUI(
                            width = 3),
                          
                          mainPanel(
+                           br(),
+                           br(),
                            plotOutput('compare', width = '100%', height = "400px"),
+                           br(),
+                           br(),
+                           br(),
+                           br(),
                            br(),
                            plotlyOutput('D3', width = '100%', height = "400px")
                          )
