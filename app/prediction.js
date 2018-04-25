@@ -1,3 +1,9 @@
+
+
+//==========================================================================================================//
+//= Data Load                                                                                              =//
+//==========================================================================================================//
+
   var data = {
     "nodes":[
             {"node":"A1", "level":4, "position":1, "edge":"A1B2"},
@@ -34,12 +40,12 @@
     ],
     "groups": [
             {"label":"2nd of H","group":"H","node":"H2","position":16,"team":"Poland","nodes":[{"node":"H2", "status":""},{"node":"G1H2", "status":"Lost"},]}, 
-            {"label":"1st of G","group":"G","node":"G1","position":15,"team":"Belgium","nodes":[{"node":"G1", "status":""},{"node":"A1B2C1D2E1F2G1H2", "status":"Win"},{"node":"E1F2G1H2", "status":"Win"},{"node":"final", "status":"Lost"},{"node":"G1H2", "status":"Win"},]}, 
+            {"label":"1st of G","group":"G","node":"G1","position":15,"team":"Belgium","nodes":[{"node":"G1", "status":""},{"node":"A1B2C1D2E1F2G1H2", "status":"Lost"},{"node":"E1F2G1H2", "status":"Win"},{"node":"G1H2", "status":"Win"},]}, 
             {"label":"2nd of F","group":"F","node":"F2","position":14,"team":"Sweden","nodes":[{"node":"F2", "status":""},{"node":"E1F2", "status":"Lost"},]}, 
             {"label":"1st of E","group":"E","node":"E1","position":13,"team":"Brazil","nodes":[{"node":"E1", "status":""},{"node":"E1F2", "status":"Win"},{"node":"E1F2G1H2", "status":"Lost"},]}, 
             {"label":"1st of D","group":"D","node":"D1","position":12,"team":"Argentina","nodes":[{"node":"D1", "status":""},{"node":"A2B1C2D1", "status":"Lost"},{"node":"C2D1", "status":"Win"},]}, 
             {"label":"2nd of C","group":"C","node":"C2","position":11,"team":"Denmark","nodes":[{"node":"C2", "status":""},{"node":"C2D1", "status":"Lost"},]}, 
-            {"label":"1st of B","group":"B","node":"B1","position":10,"team":"Portugal","nodes":[{"node":"B1", "status":""},{"node":"A2B1C2D1E2F1G2H1", "status":"Lost"},{"node":"A2B1C2D1", "status":"Win"},{"node":"A2B1", "status":"Win"},]}, 
+            {"label":"1st of B","group":"B","node":"B1","position":10,"team":"Portugal","nodes":[{"node":"B1", "status":""},{"node":"A2B1C2D1E2F1G2H1", "status":"Win"},{"node":"A2B1C2D1", "status":"Win"},{"node":"A2B1", "status":"Win"},{"node":"final", "status":"Lost"},]}, 
             {"label":"2nd of A","group":"A","node":"A2","position":9,"team":"Russia","nodes":[{"node":"A2", "status":""},{"node":"A2B1", "status":"Lost"},]}, 
             {"label":"1st of H","group":"H","node":"H1","position":8,"team":"Colombia","nodes":[{"node":"H1", "status":""},{"node":"E2F1G2H1", "status":"Lost"},{"node":"G2H1", "status":"Win"},]}, 
             {"label":"2nd of G","group":"G","node":"G2","position":7,"team":"England","nodes":[{"node":"G2", "status":""},{"node":"G2H1", "status":"Lost"},]}, 
@@ -56,9 +62,9 @@
 //= Setup                                                                                                  =//
 //==========================================================================================================//
 
-  var margin = {top: 15, right: 10, bottom: 5, left: 100},
-      width = 1800 - margin.left - margin.right,
-      height = 900 - margin.top - margin.bottom;
+  var margin = {top: 15, right: 10, bottom: 5, left: 0},
+      width = 750 - margin.left - margin.right,
+      height = 750 - margin.top - margin.bottom;
   //    height = 533 - margin.top - margin.bottom;
 
   var color = {"background": "#444",
@@ -68,13 +74,13 @@
               "axis": "#eee",
               "text": "#fff",
               "line": "#888",
-              "gray": "#666",
+              "black": "#000000",
               "groupGray": {"A": "#333", "B": "#666", "C": "#555", "D": "#888", "E": "#777", "F": "#AAA", "G": "#999", "H": "#CCC"}, //grayscale
               "group": {"A": "#2A3A85", "B": "#FCD412", "C": "#61AA25", "D": "#DB2624", "E": "#0193D9", "F": "#F09D0C", "G": "#09621D", "H": "#86001A"}}; // Fifa Colors
 
 
 // CIRCLE GRAPH
-  var widthCircle = width/2
+  var widthCircle = width
   var heightCircle = height
   var cxCircle = widthCircle/2
   var cyCircle = heightCircle/2
@@ -124,14 +130,6 @@
 //  .range(["#A6ABDF", "#474159"]) // colors
   .interpolate(d3.interpolateHcl)
 
-// BAR CHART
-  var spacing = 150,
-      barLeft = widthCircle + spacing,
-      barRight = width - 50,
-      rankSpacing = 250,
-      barTop = margin.top,
-      barBottom = height/2 - rankSpacing,
-      barWidth = 15
 
 
 // FRAME
@@ -149,29 +147,10 @@
           "height": height + margin.top + margin.bottom,
           "stroke": color.line,
           "stroke-width": .5,
-          "fill": "#111",
+          "fill": "#ffffff",
           "opacity": 1
       })
 
-  svg.append("line")
-      .attr({
-          "x1": widthCircle + spacing/4,
-          "x2": widthCircle + spacing/4,
-          "y1": margin.top,
-          "y2": height - margin.bottom - margin.top,
-          "stroke": color.line,
-          "stroke-width": .5
-      })
-
-  svg.append("line")
-      .attr({
-          "x1": widthCircle + spacing/2,
-          "x2": width - margin.right,
-          "y1": barBottom + rankSpacing + 40,
-          "y2": barBottom + rankSpacing + 40,
-          "stroke": color.line,
-          "stroke-width": .5
-      })
 
 //==========================================================================================================//
 //============================================= CIRCULAR ===================================================
@@ -448,30 +427,7 @@
 				.on("mouseover", function(d){
                     d3.select(this).attr('fill', '#1659F5');
                     node = d.node;
-                    gMapBubble.selectAll("circle").attr({"r": 0})
-
-                    gTeamsProb.selectAll("text")
-                        .text(function(d, i){
-                            if (node.indexOf(d.node) >= 0 || node == "final"){
-                              for (var i in d.nodes) {
-                                  if (d.nodes[i].node == node){
-                                    d.status = d.nodes[i].status
-                                    d3.selectAll("." + d.group + "#" + d.node).attr("fill", color.group[d.group])
-                                    gBarTeams.selectAll("." + d.group).attr("fill", color.group[d.group])
-                                    d3.selectAll("text#" + d.abrev + d.node) .attr("fill", "#1659F5");
-                                    d3.selectAll("text#" + d.abrev) .attr("fill", "#1659F5");
-                                    gRankTeams.selectAll("#" + d.abrev).attr('stroke', '#1659F5')
-                                    gMapBubble.selectAll("#" + d.abrev).attr('fill', '#1659F5')
-
-                                    
-                                    return d.status;
-                                  }
-                              }
-                            }
-                        })
-                        .attr({
-                          "fill": function(d){return colorScale(d.status)}
-                        })
+                    
               })
               .on("mouseout", function(d){
                     d3.select(this).attr(nodeAttr)
@@ -492,13 +448,6 @@
                 "y": function(d) { return nodePosition[d.node].y + 6; }})
               .attr(probAttr)
 
-
-
-
-
-
-
-
 //==========================================================================================================//
 //============================================  FUNCTIONS  =================================================
 //==========================================================================================================//
@@ -508,38 +457,6 @@
       //gTeamsProb.selectAll("text").text("hello")
       gRings.selectAll("path").attr("fill", color.gray)
       gTeam.selectAll("text").attr("fill", color.text);
-      gBarTeams.selectAll("text").attr("fill", color.text);
-      gBarTeams.selectAll("rect")
-              .attr("fill", color.gray)
-/*              .transition()
-              .duration(750)
-              .attr({
-                "y": function(d) {
-                    for (var i in d.nodes) {
-                        if (d.nodes[i].node == "final"){
-                            d.status = d.nodes[i].status
-                        }
-                    }
-                    return yBarScale(d.status)},
-                "height": function(d) {return yBarScale(0)-yBarScale(d.status)}
-              })
-*/
 
-      gRankTeams.selectAll("path").attr('stroke', 'gray')
-      gRankTeams.selectAll("circle").attr('stroke', 'gray')
-      gMapBubble.selectAll("circle").attr({
-              'fill': 'red',
-              "r": 0
-        })
-        .transition()
-        .duration(0)
-        .attr({"r": function(d) { 
-                      for (var i in d.nodes) {
-                          if (d.nodes[i].node == "final"){
-                              d.status = d.nodes[i].status
-                          }
-                      }
-                      return rBubbleScale(Math.sqrt(d.status))},
-        })
   }
-  
+
