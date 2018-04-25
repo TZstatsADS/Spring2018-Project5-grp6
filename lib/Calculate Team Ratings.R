@@ -14,9 +14,15 @@ names(club_players) <- teams
 
 club_best_players <-list()
 
+<<<<<<< HEAD
 for(i in 1:length(teams)) {
   club_best_players[[i]] <- club_players[[i]][order(club_players[[i]]$Overall, decreasing = TRUE), ]
   club_best_players[[i]] <- club_best_players[[i]][1:20, ]
+=======
+for(i in 1:length(round16_team)) {
+  team_best_players[[i]] <- team_players[[i]][order(team_players[[i]]$Overall, decreasing = TRUE), ]
+  team_best_players[[i]] <- team_best_players[[i]][1:20, ]
+>>>>>>> 43f14b83f0114be7ee22ca0b8561f16808856fa8
 }
 
 club_best_players
