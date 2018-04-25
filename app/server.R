@@ -2,7 +2,7 @@ setwd("~/Documents/GitHub/Spring2018-Project5-grp_6")
 worldCups <- read.csv("data/fifa-world-cup/WorldCups.csv",sep=',',stringsAsFactors=F)
 worldCups$DateTS <- as.Date(paste0(worldCups$Year,'-01-01'))
 load("output/CompleteDataset.RData")
-
+team_rating <- read.csv("output/World Cup Round16 Team Ratings.csv")
 
 shinyServer(function(input, output, session) { 
   ######################################      Welcome       ######################################
@@ -119,7 +119,7 @@ shinyServer(function(input, output, session) {
   })
 
   ######################################     Statistics     ######################################
-  #country
+  #team_map
   output$map <- renderLeaflet({
     countries <- readOGR("app/www/countries.geo.json", "OGRGeoJSON")
     if (input$country_map == 'All'){
@@ -136,8 +136,36 @@ shinyServer(function(input, output, session) {
         addPolygons(weight = 1, fillColor = "red", fillOpacity = 0.5)
     }
   })
+  
+  #team_compare
+  output$compare_team <- renderPlot({
+    # X Axis Breaks and Labels 
+    team_1 <-  team_rating[team_rating$X==input$country1_t, ][, -1]
+    team_2 <- team_rating[team_rating$X==input$country2_t, ][, -1]
+    df1 <- data.frame(t(rbind(colnames(team_1),team_1)))
+    df1 <- cbind(df1,rep(input$country1_t,17))
+    colnames(df1) <- c("Category","Value","Nationality")
+    df1$Value <- as.numeric(levels(df1[,2]))[df1[,2]]
+    df2 <- data.frame(t(rbind(colnames(team_2),team_2)))
+    df2 <- cbind(df2,rep(input$country2_t,17))
+    colnames(df2) <- c("Category","Value","Nationality")
+    df2$Value <- as.numeric(levels(df2[,2]))[df2[,2]] * -1
+    df <- rbind(df1,df2)
     
-  #player
+    # Plot
+    ggplot(df, aes(x = Category, y = Value, fill = Nationality)) +   # Fill column
+      geom_bar(stat = "identity", width = .6) +   # draw the bars
+      # scale_y_discrete(breaks = brks,   # Breaks
+      #                    labels = lbls) + # Labels
+      coord_flip() +  # Flip axes
+      labs(title="Comparison") +
+      theme_tufte() +  # Tufte theme from ggfortify
+      theme(plot.title = element_text(hjust = .5), 
+            axis.ticks = element_blank()) +   # Centre plot title
+      scale_fill_brewer(palette = "Dark2")  # Color palette
+  })
+    
+  #player_table
   output$player <- DT::renderDataTable(DT::datatable({
     player_table <- CompleteDataset[,-c(3,5,9)]
     if (input$country_player == 'All'){
@@ -149,7 +177,17 @@ shinyServer(function(input, output, session) {
     }
     }, options = list(autoWidth = TRUE, dom = 'tp', scrollX = TRUE)))
   
-  #compare
+  #download
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste('fifa-18-player-', input$country, '.csv', sep='')
+    },
+    content = function(file) {
+      write.csv(player_table, file)
+    }
+  )
+  
+  #player_compare
   output$compare <- renderPlot({
     
     selectdf_1 <- CompleteDataset[CompleteDataset$Nationality == input$country1, ]
@@ -206,16 +244,6 @@ shinyServer(function(input, output, session) {
                           yaxis = list(title="Value"),
                           zaxis = list(title="Overall")))
   })
-  
-  #download
-  output$downloadData <- downloadHandler(
-    filename = function() {
-      paste('fifa-18-player-', input$country, '.csv', sep='')
-    },
-    content = function(file) {
-      write.csv(player_table, file)
-    }
-  )
   
   ######################################     Prediction     ######################################
   
