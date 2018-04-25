@@ -34,7 +34,7 @@ shinyServer(function(input, output, session) {
       scale_x_datetime(limits =lims, date_breaks="4 year", labels = date_format("%Y")) + 
       scale_color_identity() + 
       labs(title='Qualified teams',
-           subtitle='Lines denote the changes in the format of each final tournament:\nhttps://en.wikipedia.org/wiki/History_of_the_FIFA_World_Cup') +
+           subtitle='Vertical lines denote the changes in the format of each final tournament.\nhttps://en.wikipedia.org/wiki/History_of_the_FIFA_World_Cup') +
       theme(axis.text.x=element_blank())
     
     #matches
@@ -105,7 +105,7 @@ shinyServer(function(input, output, session) {
                                  xmax=as.numeric(as.POSIXct(as.Date('1936-01-01'))),
                                  ymin=90,ymax=180) +
       labs(title='Total Goals Scored per World Cup',
-           subtitle='Vertical lines show editions for which the host country also won')
+           subtitle='Vertical lines show editions for which the host country also won.')
     
     #assemble plots
     grid.arrange(g1)
@@ -236,9 +236,13 @@ shinyServer(function(input, output, session) {
   #player_download
   output$downloadData <- downloadHandler(
     filename = function() {
-      paste('fifa-18-player-', input$country, '.csv', sep='')
+      paste('fifa-18-player-', input$country_player, '.csv', sep='')
     },
     content = function(file) {
+      player_table <- CompleteDataset[,-c(3,5,9)]
+      if (input$country_player != 'All'){
+        player_table <- player_table[player_table$Nationality == input$country_player,] 
+      }
       write.csv(player_table, file)
     }
   )
