@@ -1,8 +1,8 @@
-setwd("~/Documents/GitHub/Spring2018-Project5-grp_6")
-worldCups <- read.csv("data/fifa-world-cup/WorldCups.csv",sep=',',stringsAsFactors=F)
+load("worldCups.RData")
+load("CompleteDataset.RData")
+load("alluvials.RData")
+load("team_rating.RData")
 worldCups$DateTS <- as.Date(paste0(worldCups$Year,'-01-01'))
-load("output/CompleteDataset.RData")
-team_rating <- read.csv("output/World Cup Round16 Team Ratings.csv")
 
 shinyServer(function(input, output, session) { 
   ######################################      Welcome       ######################################
@@ -113,7 +113,6 @@ shinyServer(function(input, output, session) {
   
   #final rounds
   output$round <- renderPlot({
-    load("output/alluvials.RData")
     roundyear <- as.numeric(input$Year)
     do.call(grid.arrange, list(alluvials[[(roundyear - 1986)/4 + 1]]))
   })
@@ -121,7 +120,7 @@ shinyServer(function(input, output, session) {
   ######################################     Statistics     ######################################
   #team_map
   output$map <- renderLeaflet({
-    countries <- readOGR("app/www/countries.geo.json", "OGRGeoJSON")
+    countries <- readOGR("www/countries.geo.json", "OGRGeoJSON")
     if (input$country_map == 'All'){
       index <- which(countries$name %in% all_team)
       leaflet(countries[index,]) %>% 
@@ -308,7 +307,7 @@ shinyServer(function(input, output, session) {
   
   ######################################     Prediction     ######################################
   getPage<-function() {
-    return(includeHTML("app/prediction.html"))
+    return(includeHTML("prediction.html"))
   }
   output$pred<-renderUI({getPage()})
   ######################################        About       ######################################
