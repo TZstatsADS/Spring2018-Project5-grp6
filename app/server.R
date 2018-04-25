@@ -137,8 +137,34 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  #team_compare
+  #team_radar
+  output$radar <- renderPlot({
+  
+    # X Axis Breaks and Labels 
+    team_1 <-  team_rating[team_rating$X==input$country1_t, ][, -1]
+    team_2 <- team_rating[team_rating$X==input$country2_t, ][, -1]
+    df <- rbind(team_1,team_2)[,-c(1,2)]
+    rownames(df) <- c(input$country1_t,input$country2_t)
+    df <- rbind(rep(100,6),rep(0,6),df)
+
+    # Plot: Same plot with custom features
+    colors_border=c(rgb(0.8,0.2,0.5,0.9) , rgb(0.7,0.5,0.1,0.9) )
+    colors_in=c(rgb(0.8,0.2,0.5,0.4) , rgb(0.7,0.5,0.1,0.4) )
+    radarchart( df, axistype=1 , 
+                #custom polygon
+                pcol=colors_border , pfcol=colors_in , plwd=4 , plty=1,
+                #custom the grid
+                cglcol="grey", cglty=1, axislabcol="grey", caxislabels=seq(20,100,20), cglwd=0.8,
+                #custom labels
+                vlcex=0.8,
+                title = "Radar Chart"
+    )
+    legend(x=0.7, y=1, legend = rownames(df[-c(1,2),]), bty = "n", pch=20 , 
+           col=colors_in , text.col = "grey", cex=1.2, pt.cex=3)
+  })
+  
   output$compare_team <- renderPlot({
+    
     # X Axis Breaks and Labels 
     team_1 <-  team_rating[team_rating$X==input$country1_t, ][, -1]
     team_2 <- team_rating[team_rating$X==input$country2_t, ][, -1]

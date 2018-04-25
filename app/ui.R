@@ -122,6 +122,8 @@ shinyUI(
                           ),
                           
                           mainPanel(
+                            plotOutput("radar", width="100%", height = "500px"),
+                            br(),
                             plotOutput("compare_team", width="100%", height = "500px")
                           )
                         )
