@@ -6,7 +6,7 @@ Term: Spring 2018
 
 + Projec title: Till the Top of The World
 
-![World Cup](figs/worldcup.jpg)
+![World Cup](app/www/background.jpg)
 
 + Team members
 	+ team member 1: Hong, Peifeng ph2534@columbia.edu
@@ -19,7 +19,7 @@ Term: Spring 2018
 
   This summer, one of the most famous and world-wide banquet, the World Cup, will be held in Russia through June and     July. This championship draws the attention from the people all over the world for every single time. As a             consequence, it will be significantly intriguing on knowing something about the World Cup and making predictions on    it.
 
-  For this project, our team makes a shiny app on showing all of the informaion about all those 32 teams.                Simultaneously, we also make our own predictions on who will get to the end of the championship by creating our own    models. 
+  For this project, our team makes a shiny app on showing all of the informaion about all the 16 teams we assumed in     the round 16 elimination stage. Simultaneously, we also make our own predictions on who will get to the end of the     championship by creating our own models. 
   
   You can find all of the useful information about soccer and World Cup in our app, and you can also check out our       predictions in it. Try it, enjoy it!
 	
@@ -30,7 +30,7 @@ Term: Spring 2018
 	
   ![Road to the Top](figs/prediction.jpg)
   
-**Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
+**Contribution statement**:
 
 1. Xueyao Li, Yuhao Kang and Peifeng Hong creates the shiny app and fill in all the information of the 2018 World Cup together.
 
