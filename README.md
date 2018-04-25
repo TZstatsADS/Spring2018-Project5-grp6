@@ -29,7 +29,7 @@ Term: Spring 2018
 	
 	Here is the first look of our predictions of the entire elimination stages:
 	
-  ![Road to the Top](figs/prediction.jpg)
+  ![Road to the Top](app/www/pred1.png)
   
 **Contribution statement**:
 
