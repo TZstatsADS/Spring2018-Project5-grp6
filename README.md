@@ -27,6 +27,7 @@ Term: Spring 2018
 	
 	
 	Here is the first look of our predictions of the entire elimination stages:
+	
   ![Road to the Top](figs/prediction.jpg)
   
 **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
