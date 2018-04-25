@@ -228,7 +228,45 @@ shinyUI(
              ),
              br(),
              
-             fixedRow()
+             fixedRow(
+               column(div(id = 'about',
+                      HTML('This summer, one of the most famous and world-wide banquet, 
+                            the World Cup, will be held in Russia through June and July. 
+                            This championship draws the attention from the people 
+                            all over the world for every single time.
+                            As a consequence, it will be significantly intriguing on 
+                            knowing something about the World Cup and making predictions on it.
+                            <br><br>
+                            In this website, our team shows all of the informaion about 
+                            the 16 teams we assumed in the round 16 elimination stage. 
+                            Simultaneously, we also make our own predictions on 
+                            who will get to the end of the championship 
+                            by creating our own models.
+                            <br><br>
+                            You can find all of the useful information about 
+                            soccer and World Cup in this website, 
+                            and you can also check out our predictions in it. 
+                            Try it, and enjoy it!')),
+                      width = 12),
+               
+               br(),
+               column(h3('Data'), 
+                      div(id = 'about', 'The data in this website comes from', 
+                          a(id = 'footy', 'FIFA worldcup 2018 Dataset', 
+                            href = 'https://www.kaggle.com/ahmedelnaggar/fifa-worldcup-2018-dataset'),
+                          'and',
+                          a(id = 'footy', 'FIFA 18 Complete Player Dataset', 
+                            href = 'https://www.kaggle.com/thec03u5/fifa-18-demo-player-dataset'),
+                          '.'),
+                      width = 12),
+               
+               br(),
+               column(h3('Contact'), 
+                      div(id = 'about', 'Please feel free to',
+                          a(id = 'HC', 'contact us', href = 'https://github.com/TZstatsADS/Spring2018-Project5-grp_6'),
+                          'if you have any questions or comments regarding this website.'),
+                      width = 12)
+             )
     )
   )
 )
