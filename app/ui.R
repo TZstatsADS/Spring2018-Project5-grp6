@@ -215,7 +215,7 @@ shinyUI(
              ),
              br(),
              
-             mainPanel(img(src='pred.png', width='150%'))
+             mainPanel(includeHTML("prediction.html"))
     ),
 
     ######################################        About       ######################################
