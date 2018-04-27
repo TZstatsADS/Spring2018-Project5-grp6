@@ -5,9 +5,8 @@ account: xueyao0917
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 330369
-bundleId: 1339547
+bundleId: 1341972
 url: https://xueyao0917.shinyapps.io/FIFAWorldCup/
-when: 1524691988.86128
+when: 1524787017.18913
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: prediction.html|prediction.js

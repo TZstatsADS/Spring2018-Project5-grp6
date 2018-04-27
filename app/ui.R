@@ -267,7 +267,7 @@ shinyUI(
              ),
              br(),
              
-             mainPanel('Please click on the country name'), 
+             mainPanel(strong('Please load unsafe scripts and click on the country name.')), 
              includeHTML("prediction.html")
     )
   )
